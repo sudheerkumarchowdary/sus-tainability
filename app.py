@@ -1,4 +1,3 @@
-# app.py
 import streamlit as st
 from PIL import Image
 import tempfile
@@ -10,7 +9,7 @@ from detection import run_inference
 genai.configure(api_key="AIzaSyAsdivNEUd6GB9yuQEKCgCo-PhWi-slY2Y")  # Replace with your actual API key
 
 # Streamlit App title
-st.title("Waste Detection App")
+st.title("SuS - Tainability")
 
 # File uploader for image input
 uploaded_file = st.file_uploader("Upload an image", type=["jpeg", "jpg", "png"])
@@ -66,3 +65,30 @@ if uploaded_file is not None:
 
     # Clean up the temporary file
     os.remove(temp_image_path)
+
+# Adding a chat feature using Generative AI
+st.write("## Chat with the Model")
+
+# Create a text input for the user to ask questions
+user_input = st.text_input("Ask anything related to sustainability, waste management, or reuse:")
+
+if user_input:
+    try:
+        # Create a prompt based on the user's question
+        prompt = f"Answer this sustainability-related question: {user_input}"
+
+        # Generate content using the Gemini model
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        response = model.generate_content(prompt)
+
+        # Extract the response text
+        raw_response = response.text
+
+        # Remove any markdown-like headers (e.g., ## What is a Sustainable Life?)
+        cleaned_response = '\n'.join([line for line in raw_response.split('\n') if not line.startswith('#')])
+
+        # Display the cleaned response to the user
+        st.write(cleaned_response)
+
+    except Exception as e:
+        st.write("Error during chat:", str(e))
