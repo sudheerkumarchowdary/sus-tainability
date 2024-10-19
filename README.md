@@ -1,4 +1,4 @@
-# Waste Detection App
+# Chatbot that helps to reuse/recycle household waste
 
 This is a Streamlit application that utilizes a waste detection model to identify reusable objects in uploaded images. It integrates with Google's Generative AI (Gemini) API to provide suggestions on how to reuse the detected objects.
 
